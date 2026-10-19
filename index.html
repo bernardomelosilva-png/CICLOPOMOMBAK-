@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12845b">
+  <meta name="description" content="Apoie o trabalho de Ciclope Mombak via Pix. Escolha o valor e envie pelo aplicativo do seu banco.">
+  <title>Apoie meu trabalho | Ciclope Mombak</title>
+  <style>
+    :root { color-scheme: dark; --bg:#071b14; --panel:#0d2b20; --green:#16a36d; --green2:#20c783; --text:#f3fff8; --muted:#b8d6c7; }
+    * { box-sizing: border-box; }
+    body {
+      margin:0; min-height:100vh; display:grid; place-items:center; padding:24px;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text); background:radial-gradient(ellipse at top, #14583e 0%, var(--bg) 60%);
+    }
+    main { width:min(100%, 520px); }
+    .card { background:rgba(13,43,32,.96); border:1px solid rgba(114,230,174,.22); border-radius:28px; padding:clamp(24px,6vw,42px); box-shadow:0 24px 80px #0006; }
+    .mark { width:64px;height:64px;display:grid;place-items:center;border-radius:20px;background:linear-gradient(135deg,var(--green2),#08764d);font-size:30px;margin-bottom:22px; }
+    .eyebrow { color:#8ff0bf;text-transform:uppercase;letter-spacing:.14em;font-weight:750;font-size:.76rem; }
+    h1 { font-size:clamp(2rem,8vw,3rem);line-height:1.05;letter-spacing:-.04em;margin:10px 0 14px; }
+    p { color:var(--muted);line-height:1.6;margin:0 0 20px; }
+    .pixbox { background:#071e16;border:1px solid #235941;border-radius:18px;padding:18px;margin:24px 0; }
+    .label { color:var(--muted);font-size:.82rem;margin-bottom:8px; }
+    .keyrow { display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
+    .key { font-weight:800;font-size:clamp(1.15rem,5vw,1.5rem);letter-spacing:.03em;overflow-wrap:anywhere;flex:1; }
+    button { cursor:pointer;border:0;border-radius:14px;padding:14px 18px;font:inherit;font-weight:800;transition:transform .12s,filter .12s; }
+    button:hover { filter:brightness(1.08); } button:active { transform:scale(.98); }
+    .copy { background:var(--green2);color:#052416;min-width:124px; }
+    .primary { display:block;text-align:center;text-decoration:none;background:var(--green);color:white;padding:15px 18px;border-radius:14px;font-weight:800;margin-top:12px; }
+    h2 { font-size:1.05rem;margin:28px 0 12px; }
+    ol { padding-left:22px;color:var(--muted);line-height:1.7;margin:0; }
+    li { padding-left:4px;margin:6px 0; }
+    .note { font-size:.83rem;margin-top:22px;border-top:1px solid #28533f;padding-top:18px; }
+    .status { min-height:1.4em;font-size:.9rem;color:#8ff0bf;margin-top:9px; }
+    footer { text-align:center;color:#8db8a2;font-size:.78rem;margin-top:18px; }
+    @media(max-width:390px) { body{padding:14px}.keyrow{align-items:stretch}.copy{width:100%}.card{border-radius:22px} }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card" aria-labelledby="title">
+      <div class="mark" aria-hidden="true">✦</div>
+      <div class="eyebrow">Ciclope Mombak</div>
+      <h1 id="title">Apoie meu trabalho</h1>
+      <p>Curte o conteúdo? Se quiser fortalecer esse projeto, você pode enviar uma contribuição via Pix no valor que desejar. Obrigado pelo apoio!</p>
+
+      <div class="pixbox">
+        <div class="label">Minha chave Pix · telefone</div>
+        <div class="keyrow">
+          <div class="key" id="pixKey">21980180095</div>
+          <button class="copy" id="copyButton" type="button">Copiar Pix</button>
+        </div>
+        <div class="status" id="status" role="status" aria-live="polite"></div>
+      </div>
+
+      <a class="primary" href="https://www.bcb.gov.br/meubc/faqs/p/como-faco-um-pix" target="_blank" rel="noopener noreferrer">Como pagar com Pix</a>
+
+      <h2>Como enviar sua contribuição</h2>
+      <ol>
+        <li>Abra o aplicativo do seu banco ou carteira digital.</li>
+        <li>Entre em Pix e escolha a opção de transferência por chave.</li>
+        <li>Selecione telefone, informe a chave acima e confira o nome do destinatário antes de continuar.</li>
+        <li>Digite o valor que desejar, revise os dados e confirme no aplicativo do banco.</li>
+      </ol>
+
+      <p class="note">Antes de confirmar, confira se o nome exibido no seu banco corresponde ao destinatário esperado. Este site não processa pagamentos nem confirma recebimentos; a transferência acontece no aplicativo da sua instituição financeira.</p>
+    </section>
+    <footer>Uma página independente de apoio · Ciclope Mombak</footer>
+  </main>
+  <script>
+    const copyButton = document.getElementById('copyButton');
+    const pixKey = document.getElementById('pixKey').textContent.trim();
+    const status = document.getElementById('status');
+    copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(pixKey);
+        status.textContent = 'Chave Pix copiada. Cole no aplicativo do seu banco.';
+      } catch (e) {
+        const field = document.createElement('textarea');
+        field.value = pixKey;
+        field.setAttribute('readonly', '');
+        field.style.position = 'absolute';
+        field.style.left = '-9999px';
+        document.body.appendChild(field);
+        field.select();
+        const copied = document.execCommand('copy');
+        field.remove();
+        status.textContent = copied
+          ? 'Chave Pix copiada. Cole no aplicativo do seu banco.'
+          : 'Não foi possível copiar automaticamente. Selecione e copie a chave exibida.';
+      }
+    });
+  </script>
+</body>
+</html>
